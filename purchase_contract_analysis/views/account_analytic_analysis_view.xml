@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+
+        <record model="ir.actions.act_window" id="action_purchase_order">
+            <field name="name">Purchase Orders</field>
+            <field name="res_model">purchase.order</field>
+            <field name="src_model">account.analytic.account</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a quotation that can be converted into a Purchase
+                order.
+              </p><p>
+                Use Purchase orders to track everything that should be invoiced
+                at a fix price on a contract.
+              </p>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="purchase_account_analytic_account_form_form_view">
+            <field name="name">pruchase.account.analytic.account.form.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="account_analytic_analysis.account_analytic_account_form_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <button name="return_to_draft" string="Return to draft" type="object" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                </field>
+                <xpath expr="//field[@name='code']" position="before">
+                    <field name="contract_type" invisible="1"/>
+                </xpath>
+                <field name="template_id" postion="after">
+                    <field name="contract_type"/>
+                </field>
+                <xpath expr="//field[@name='use_timesheets']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+                <xpath expr="//table[@class='oe_form_analytic_account']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+                <xpath expr="//separator[@name='toinvoice']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='invoice_on_timesheets']" position="after">
+                    <separator string="Invoicing" attrs="{'invisible': [('contract_type', '!=', 'purchase')]}"/>
+                    <field name="contract_purchase_itens_lines" create="0" editable="0" attrs="{'invisible': [('contract_type', '!=', 'purchase')]}"/>
+                </xpath>
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button name="create_purchase_contract_item" string="Create Item"
+                            class="oe_inline oe_stat_button" icon="fa-edit" type="object"
+                            attrs="{'invisible': [('contract_type', '!=', 'purchase')]}" />
+                    <button name="create_purchase_orders_wizard" string="Create Orders"
+                            class="oe_inline oe_stat_button" icon="fa-edit" type="object"
+                            attrs="{'invisible': [('contract_type', '!=', 'purchase')]}" />
+                    <button name="%(action_purchase_order)d" string="View Orders"
+                            class="oe_inline oe_stat_button" icon="fa-copy" type="action"
+                            context="{'default_partner_id': partner_id, 'search_default_project_id': active_id,'default_project_id': active_id, 'default_pricelist_id': pricelist_id}"/>
+                    </xpath>
+                <xpath expr="//field[@name='recurring_invoices']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='recurring_invoices']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_purchase_contract_account_analytic_account_form">
+            <field name="name">purchase.contract.account.analytic.account.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="purchase_account_analytic_account_form_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Budget Lines']" position="replace">
+                    <page string="Budget Lines" groups="account.group_account_user">
+                        <field name="crossovered_budget_line" widget="one2many_list" colspan="4" nolabel="1" mode="tree">
+                            <tree string="Budget Lines" editable="top">
+                                <field name="crossovered_budget_id"/>
+                                <field name="general_budget_id"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="paid_date" invisible="1"/>
+                                <field name="planned_amount"/>
+                                <field name="planned_amount" position="after">
+                                    <field name="allocated_amount" sum="Allocated Amount"/>
+                                </field>
+                                <field name="practical_amount" sum="Practical Amount"/>
+                                <field name="theoritical_amount" sum="Theoritical Amount" invisible="1"/>
+                                <field name="percentage"/>
+                            </tree>
+                            <form string="Budget Lines">
+                                <field name="crossovered_budget_id"/>
+                                <field name="general_budget_id"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="paid_date" invisible="1"/>
+                                <field name="planned_amount"/>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="contract_purchase_action" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">account.analytic.account</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_type':'contract', 'default_contract_type':'purchase', 'search_default_open':1, 'search_default_pending':1, 'default_manager_id':uid}</field>
+            <field name="domain">[('type','=','contract'),('contract_type', '=', 'purchase')]</field>
+        </record>
+
+        <menuitem
+                action="contract_purchase_action"
+                id="menu_contract_purchase_action"
+                parent="purchase.menu_procurement_management"
+                sequence="28"
+        />
+
+    </data>
+</openerp>
