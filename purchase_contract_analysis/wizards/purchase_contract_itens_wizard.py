@@ -30,5 +30,5 @@ class PurchaseContractItensWizard(models.TransientModel):
             'quantity': self.quantity,
             'contract_id': self.contract_id.id
         }
-        self.env[''].create(vals)
+        self.env['contract.purchase.itens'].create(vals)
         return {'type': 'ir.actions.act_window_close'}
