@@ -29,8 +29,7 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
                         line.name and wizard_line.product_id.id == \
                         line.product_id.id and wizard_line.contract_id.id == \
                         line.contract_id.id:
-                    if (wizard_line.price *
-                            wizard_line.quantity) > line.remaining:
+                    if wizard_line.quantity > line.remaining:
                         return False
         return True
 
