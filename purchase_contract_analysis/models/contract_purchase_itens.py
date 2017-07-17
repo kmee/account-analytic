@@ -121,5 +121,4 @@ class ContractPurchaseItens(models.Model):
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",
         string="Contract",
-        required=True
     )
