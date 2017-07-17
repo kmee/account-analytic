@@ -48,14 +48,13 @@
                     <field name="contract_purchase_itens_lines"
                            attrs="{'invisible': [('contract_type', '!=', 'purchase')]}">
                             <tree>
-                                <field name="name"/>
-                                <field name="product_id"/>
-                                <field name="contract_id"/>
-                                <field name="quantity"/>
-                                <field name="expected"/>
-                                <field name="invoiced"/>
-                                <field name="to_invoice"/>
-                                <field name="remaining"/>
+                                <field name="name" string="Nome"/>
+                                <field name="product_id" string="Produto"/>
+                                <field name="quantity" string="Quantidade"/>
+                                <field name="expected" string="Esperado"/>
+                                <field name="invoiced" string="Faturado"/>
+                                <field name="to_invoice" string="Aguardando Faturamento"/>
+                                <field name="remaining" string="Saldo(Qtd)"/>
                             </tree>
                     </field>
                 </xpath>
@@ -116,7 +115,7 @@
         </record>
 
         <record id="contract_purchase_action" model="ir.actions.act_window">
-            <field name="name">Contracts</field>
+            <field name="name">Contratos</field>
             <field name="res_model">account.analytic.account</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
