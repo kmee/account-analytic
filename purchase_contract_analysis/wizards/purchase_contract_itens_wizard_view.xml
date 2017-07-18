@@ -12,20 +12,21 @@
                         Create a new item for the active purchase contract.
                     </p>
                     <group>
-                        <field name="name" />
+                        <field name="name" string="Nome"/>
                     </group>
                     <group>
-                        <field name="product_id" />
+                        <field name="product_id" string="Produto"/>
                     </group>
                     <group>
-                        <field name="price" />
+                        <field name="price" string="Preço"/>
                     </group>
                     <group>
-                        <field name="quantity" />
+                        <field name="quantity" string="Quantidade"/>
                     </group>
                     <field name="contract_id" invisible="1" />
                     <footer>
-                        <button string="Create Item" name="create_purchase_contract_item" type="object" class="oe_highlight"/>
+                        <button string="Criar item"
+                                name="create_purchase_contract_item" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
