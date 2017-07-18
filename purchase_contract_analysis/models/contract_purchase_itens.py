@@ -32,10 +32,9 @@ class ContractPurchaseItens(models.Model):
     @api.multi
     def _compute_remaining_amount(self):
         for record in self:
-            # if record.expected:
-                record.remaining = record.quantity - (
-                    record.invoiced_qty
-                )
+            record.remaining = record.quantity - (
+                record.invoiced_qty
+            )
 
     @api.depends('expected', 'contract_id', 'quantity')
     @api.multi
@@ -117,6 +116,7 @@ class ContractPurchaseItens(models.Model):
     remaining = fields.Float(
         string="Remaining Qty",
         compute=_compute_remaining_amount
+        store=True
     )
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",
