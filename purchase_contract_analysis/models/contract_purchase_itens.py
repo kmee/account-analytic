@@ -115,7 +115,7 @@ class ContractPurchaseItens(models.Model):
     )
     remaining = fields.Float(
         string="Remaining Qty",
-        compute=_compute_remaining_amount
+        compute=_compute_remaining_amount,
         store=True
     )
     contract_id = fields.Many2one(
