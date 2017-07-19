@@ -80,6 +80,7 @@ class PurchaseAccountAnalyticAnalysis(models.Model):
         for line in self.contract_purchase_itens_lines:
             if line.remaining > 0:
                 val = {
+                    'line_id': line.id,
                     'name': line.name,
                     'product_id': line.product_id.id,
                     'price': line.price,

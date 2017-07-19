@@ -104,17 +104,22 @@ class PurchaseOrdersPartialContractLine(models.TransientModel):
     wizard_id = fields.Many2one(
         comodel_name="purchase.order.partial.contract.wizard"
     )
-    name = fields.Char(string="Name", required=True)
-    price = fields.Float(string="Price")
+    line_id = fields.Many2one(
+        comodel_name='contract.purchase.itens'
+    )
+    name = fields.Char(string="Name", required=True, related='line_id.name')
+    price = fields.Float(string="Price", related='line_id.price')
     product_id = fields.Many2one(
-        comodel_name="product.product", string="Product", required=True
+        comodel_name="product.product", string="Product", required=True,
+        related='line_id.product_id'
     )
     quantity = fields.Float(string="Quantity")
-    expected = fields.Float(string="Expected")
-    invoiced = fields.Float(string="Invoiced")
-    to_invoice = fields.Float(string="To Invoice")
-    remaining = fields.Float(string="Remaining")
+    expected = fields.Float(string="Expected", related='line_id.expected')
+    invoiced = fields.Float(string="Invoiced", related='line_id.invoiced')
+    to_invoice = fields.Float(string="To Invoice",
+                              related='line_id.to_invoice')
+    remaining = fields.Float(string="Remaining", related='line_id.remaining')
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",
-        string="Contract"
+        string="Contract", related='line_id.contract_id'
     )
