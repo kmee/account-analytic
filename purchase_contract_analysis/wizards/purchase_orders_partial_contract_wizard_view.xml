@@ -16,20 +16,22 @@
                     <field name="line_ids" nolabel="1">
                         <tree string="Lines" create="false" editable="bottom">
                             <field name="contract_id" invisible="1"/>
-                            <field name="name"/>
-                            <field name="product_id"/>
-                            <field name="quantity"/>
-                            <field name="expected"/>
-                            <field name="invoiced"/>
-                            <field name="to_invoice"/>
-                            <field name="remaining"/>
+                            <field name="name" string="Nome"/>
+                            <field name="product_id" string="Produto"/>
+                            <field name="quantity" string="Quantidade"/>
+                            <field name="expected" string="Esperado"  readonly="1"/>
+                            <field name="invoiced" string="Faturado"  readonly="1"/>
+                            <field name="to_invoice"
+                                   string="Aguardando Faturamento"  readonly="1"/>
+                            <field name="remaining" string="Saldo(Qtd)"  readonly="1"/>
                         </tree>
                     </field>
                     <group>
                         <field name="all_in_one_purchase_order"/>
                     </group>
                     <footer>
-                        <button string="Create Orders" name="create_purchase_order" type="object" class="oe_highlight"/>
+                        <button string="Criar Ordens de Serviço"
+                                name="create_purchase_order" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
