@@ -51,9 +51,9 @@
                                 <field name="name" string="Nome"/>
                                 <field name="product_id" string="Produto"/>
                                 <field name="quantity" string="Quantidade"/>
-                                <field name="expected" string="Esperado"/>
-                                <field name="invoiced" string="Faturado"/>
-                                <field name="to_invoice" string="Aguardando Faturamento"/>
+                                <field name="expected" string="Valor Esperado"/>
+                                <field name="invoiced" string="Valor Faturado"/>
+                                <field name="to_invoice" string="Valor Aguardando Faturamento"/>
                                 <field name="remaining" string="Saldo(Qtd)"/>
                             </tree>
                     </field>
