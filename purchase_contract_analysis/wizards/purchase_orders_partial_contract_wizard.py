@@ -100,6 +100,20 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
 
 class PurchaseOrdersPartialContractLine(models.TransientModel):
     _name = "purchase.order.partial.contract.line"
+    
+    @api.depends('line_id')
+    @api.multi
+    def _get_values(self):
+        for record in self:
+            if record.line_id:
+                record.name = record.line_id.name
+                record.price = record.line_id.price
+                record.product_id = record.line_id.product_id
+                record.expected = record.line_id.expected
+                record.invoiced = record.line_id.invoiced
+                record.to_invoice = record.line_id.to_invoice
+                record.remaining = record.line_id.remaining
+                record.contract_id = record.line_id.contract_id
 
     wizard_id = fields.Many2one(
         comodel_name="purchase.order.partial.contract.wizard"
@@ -107,19 +121,19 @@ class PurchaseOrdersPartialContractLine(models.TransientModel):
     line_id = fields.Many2one(
         comodel_name='contract.purchase.itens'
     )
-    name = fields.Char(string="Name", required=True, related='line_id.name')
-    price = fields.Float(string="Price", related='line_id.price')
+    name = fields.Char(string="Name", required=True, compute='_get_values')
+    price = fields.Float(string="Price", compute='_get_values')
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product", required=True,
-        related='line_id.product_id'
+        compute='_get_values'
     )
     quantity = fields.Float(string="Quantity")
-    expected = fields.Float(string="Expected", related='line_id.expected')
-    invoiced = fields.Float(string="Invoiced", related='line_id.invoiced')
+    expected = fields.Float(string="Expected", compute='_get_values')
+    invoiced = fields.Float(string="Invoiced", compute='_get_values')
     to_invoice = fields.Float(string="To Invoice",
-                              related='line_id.to_invoice')
-    remaining = fields.Float(string="Remaining", related='line_id.remaining')
+                              compute='_get_values')
+    remaining = fields.Float(string="Remaining", compute='_get_values')
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",
-        string="Contract", related='line_id.contract_id'
+        string="Contract", compute='_get_values'
     )
