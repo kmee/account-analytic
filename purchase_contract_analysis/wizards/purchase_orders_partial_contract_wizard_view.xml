@@ -13,6 +13,9 @@
                         will create a draft purchase order that can be modified
                         before validation.
                     </p>
+                    <group>
+                        <field name="prazo_entrega"/>
+                    </group>
                     <field name="line_ids" nolabel="1">
                         <tree string="Lines" create="false" editable="bottom">
                             <field name="contract_id" invisible="1"/>

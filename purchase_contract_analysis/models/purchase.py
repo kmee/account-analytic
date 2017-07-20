@@ -18,3 +18,6 @@ class ContractPurchase(models.Model):
             'sent': [('readonly', False)]
         }
     )
+    prazo_entrega = fields.Date(
+        string=u'Prazo de Entrega'
+    )
