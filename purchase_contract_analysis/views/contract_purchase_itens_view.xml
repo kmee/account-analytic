@@ -2,20 +2,6 @@
 <openerp>
     <data>
 
-        <record model="ir.ui.view" id="contract_purchase_order_form_view">
-            <field name="name">contract.purchase.order.form</field>
-            <field name="model">purchase.order</field>
-            <field name="inherit_id" ref="purchase.purchase_order_form"/>
-            <field name="arch" type="xml">
-                <field name="partner_ref" position="after">
-                    <field name="project_id"/>
-                </field>
-                <field name="minimum_planned_date" position="after">
-                    <field name="prazo_entrega"/>
-                </field>
-            </field>
-        </record>
-
         <record model="ir.ui.view" id="contract_purchase_itens_form_view">
             <field name="name">contract.purchase.itens.form</field>
             <field name="model">contract.purchase.itens</field>

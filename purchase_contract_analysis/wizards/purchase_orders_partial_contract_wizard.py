@@ -21,7 +21,8 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
         comodel_name="account.analytic.account"
     )
     prazo_entrega = fields.Date(
-        string=u'Prazo de Entrega'
+        string=u'Prazo de Entrega',
+        required=True
     )
 
     @api.multi

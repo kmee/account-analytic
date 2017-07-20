@@ -32,6 +32,21 @@
                 <field name="partner_ref" position="after">
                     <field name="project_id"/>
                 </field>
+                <field name="picking_type_id" position="after">
+                    <field name="prazo_entrega" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+                <page string="Deliveries &amp; Invoices" position="after">
+                    <page string="Prorrogações de Entrega">
+                        <field name="prorrogacao_entrega_ids" context="{'default_prazo_entrega_atual': prazo_entrega}">
+                            <tree edit="false" delete="false" editable="bottom">
+                                <field name="create_date" string="Data da Alteração" readonly="True"/>
+                                <field name="prazo_entrega_atual" string="Prazo de Entrega Anterior"/>
+                                <field name="novo_prazo_entrega"/>
+                                <field name="motivo"/>
+                            </tree>
+                        </field>
+                    </page>
+                </page>
             </field>
         </record>
 
