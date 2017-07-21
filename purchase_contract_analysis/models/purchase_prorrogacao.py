@@ -19,7 +19,7 @@ class PurchaseOrderProrrogacaoEntrega(models.Model):
     )
     novo_prazo_entrega = fields.Date(
         string=u'Novo Prazo de Entrega',
-        required=True
+        # required=True
     )
 
     order_id = fields.Many2one(

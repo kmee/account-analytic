@@ -22,7 +22,7 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
     )
     prazo_entrega = fields.Date(
         string=u'Prazo de Entrega',
-        required=True
+        # required=True
     )
 
     @api.multi
@@ -52,7 +52,7 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
                 self.env.ref('stock.picking_type_in').id,
             'location_id':
                 self.env.ref('stock.stock_location_stock').id,
-            'prazo_entrega': self.prazo_entrega
+            'prazo_entrega': self.prazo_entrega or False,
         }
         purchase_order_vals.update(onchange_partner['value'])
         return purchase_order_obj.create(purchase_order_vals)

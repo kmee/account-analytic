@@ -26,7 +26,9 @@ class PurchaseAccountAnalyticAnalysis(models.Model):
         comodel_name='contract.purchase.itens',
         inverse_name='contract_id',
     )
-
+    partner_id = fields.Many2one(
+        required=True,
+    )
     contract_type = fields.Selection(
         selection=CONTRACT_TYPE,
         string="Contract Type"

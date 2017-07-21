@@ -20,7 +20,6 @@ class ContractPurchaseOrder(models.Model):
     )
     prazo_entrega = fields.Date(
         string=u'Prazo de Entrega',
-        required=True
     )
     prorrogacao_entrega_ids = fields.One2many(
         string=u'Prorrogações de Entrega',
