@@ -20,6 +20,10 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account"
     )
+    prazo_entrega = fields.Date(
+        string=u'Prazo de Entrega',
+        # required=True
+    )
 
     @api.multi
     def _check_lines_remaining_amount(self):
@@ -48,6 +52,7 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
                 self.env.ref('stock.picking_type_in').id,
             'location_id':
                 self.env.ref('stock.stock_location_stock').id,
+            'prazo_entrega': self.prazo_entrega or False,
         }
         purchase_order_vals.update(onchange_partner['value'])
         return purchase_order_obj.create(purchase_order_vals)
@@ -100,21 +105,40 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
 
 class PurchaseOrdersPartialContractLine(models.TransientModel):
     _name = "purchase.order.partial.contract.line"
+    
+    @api.depends('line_id')
+    @api.multi
+    def _get_values(self):
+        for record in self:
+            if record.line_id:
+                record.name = record.line_id.name
+                record.price = record.line_id.price
+                record.product_id = record.line_id.product_id
+                record.expected = record.line_id.expected
+                record.invoiced = record.line_id.invoiced
+                record.to_invoice = record.line_id.to_invoice
+                record.remaining = record.line_id.remaining
+                record.contract_id = record.line_id.contract_id
 
     wizard_id = fields.Many2one(
         comodel_name="purchase.order.partial.contract.wizard"
     )
-    name = fields.Char(string="Name", required=True)
-    price = fields.Float(string="Price")
+    line_id = fields.Many2one(
+        comodel_name='contract.purchase.itens'
+    )
+    name = fields.Char(string="Name", required=True, compute='_get_values')
+    price = fields.Float(string="Price", compute='_get_values')
     product_id = fields.Many2one(
-        comodel_name="product.product", string="Product", required=True
+        comodel_name="product.product", string="Product", required=True,
+        compute='_get_values'
     )
     quantity = fields.Float(string="Quantity")
-    expected = fields.Float(string="Expected")
-    invoiced = fields.Float(string="Invoiced")
-    to_invoice = fields.Float(string="To Invoice")
-    remaining = fields.Float(string="Remaining")
+    expected = fields.Float(string="Expected", compute='_get_values')
+    invoiced = fields.Float(string="Invoiced", compute='_get_values')
+    to_invoice = fields.Float(string="To Invoice",
+                              compute='_get_values')
+    remaining = fields.Float(string="Remaining", compute='_get_values')
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",
-        string="Contract"
+        string="Contract", compute='_get_values'
     )

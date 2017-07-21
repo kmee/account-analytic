@@ -2,17 +2,6 @@
 <openerp>
     <data>
 
-        <record model="ir.ui.view" id="contract_purchase_order_form_view">
-            <field name="name">contract.purchase.order.form</field>
-            <field name="model">purchase.order</field>
-            <field name="inherit_id" ref="purchase.purchase_order_form"/>
-            <field name="arch" type="xml">
-                <field name="partner_ref" position="after">
-                    <field name="project_id"/>
-                </field>
-            </field>
-        </record>
-
         <record model="ir.ui.view" id="contract_purchase_itens_form_view">
             <field name="name">contract.purchase.itens.form</field>
             <field name="model">contract.purchase.itens</field>
@@ -55,9 +44,9 @@
                     <field name="name" string="Nome"/>
                     <field name="product_id" string="Produto"/>
                     <field name="quantity" string="Quantidade"/>
-                    <field name="expected" string="Esperado"/>
-                    <field name="invoiced" string="Faturado"/>
-                    <field name="to_invoice" string="Aguardando Faturamento"/>
+                    <field name="expected" string="Valor Esperado"/>
+                    <field name="invoiced" string="Valor Faturado"/>
+                    <field name="to_invoice" string="Valor Aguardando Faturamento"/>
                     <field name="remaining" string="Saldo(Qtd)"/>
                 </tree>
             </field>

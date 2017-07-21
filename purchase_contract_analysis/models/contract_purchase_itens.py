@@ -90,6 +90,10 @@ class ContractPurchaseItens(models.Model):
                         total += line.price_subtotal
             record.invoiced = total
 
+    @api.onchange('product_id')
+    def _compute_price(self):
+        self.price = self.product_id.lst_price
+
     name = fields.Char(string="Name", required=True)
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product", required=True
@@ -107,7 +111,7 @@ class ContractPurchaseItens(models.Model):
     )
     invoiced_qty = fields.Float(
         string="Invoiced Qty",
-        compute=_compute_to_invoice_amount
+        compute=_compute_to_invoice_amount,
     )
     to_invoice = fields.Float(
         string="To Invoice",
@@ -115,8 +119,7 @@ class ContractPurchaseItens(models.Model):
     )
     remaining = fields.Float(
         string="Remaining Qty",
-        compute=_compute_remaining_amount,
-        store=True
+        compute=_compute_remaining_amount
     )
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",

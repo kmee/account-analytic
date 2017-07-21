@@ -26,7 +26,9 @@ class PurchaseAccountAnalyticAnalysis(models.Model):
         comodel_name='contract.purchase.itens',
         inverse_name='contract_id',
     )
-
+    partner_id = fields.Many2one(
+        required=True,
+    )
     contract_type = fields.Selection(
         selection=CONTRACT_TYPE,
         string="Contract Type"
@@ -80,14 +82,7 @@ class PurchaseAccountAnalyticAnalysis(models.Model):
         for line in self.contract_purchase_itens_lines:
             if line.remaining > 0:
                 val = {
-                    'name': line.name,
-                    'product_id': line.product_id.id,
-                    'price': line.price,
-                    'expected': line.expected,
-                    'invoiced': line.invoiced,
-                    'to_invoice': line.to_invoice,
-                    'remaining': line.remaining,
-                    'contract_id': line.contract_id.id,
+                    'line_id': line.id
                 }
                 line_values.append((0, 0, val))
         val_wizard = {
