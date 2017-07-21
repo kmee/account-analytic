@@ -89,7 +89,19 @@
                            position="attributes">
                         <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
                     </xpath>
+            </field>
+        </record>
 
+         <record model="ir.ui.view"
+                 id="view_purchase_contract_account_analytic_invoice_form">
+            <field name="name">purchase.contract.account.analytic.account.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic_contract_hr_expense.account_analytic_account_form_expense_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='to_invoice']"
+                           position="attributes">
+                        <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                    </xpath>
             </field>
         </record>
 
