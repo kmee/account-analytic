@@ -23,6 +23,9 @@
                     <group>
                         <field name="quantity" string="Quantidade"/>
                     </group>
+                    <group>
+                        <field name="date_end" string="Data Final"/>
+                    </group>
                     <field name="contract_id" invisible="1" />
                     <footer>
                         <button string="Criar item"

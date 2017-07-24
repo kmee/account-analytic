@@ -20,6 +20,9 @@ class PurchaseContractItensWizard(models.TransientModel):
         string="Contract",
         required=True
     )
+    date_end = fields.Date(
+        string="Final Date"
+    )
 
     @api.multi
     def create_purchase_contract_item(self):
@@ -28,7 +31,8 @@ class PurchaseContractItensWizard(models.TransientModel):
             'product_id': self.product_id.id,
             'price': self.price,
             'quantity': self.quantity,
-            'contract_id': self.contract_id.id
+            'contract_id': self.contract_id.id,
+            'date_end': self.date_end
         }
         self.env['contract.purchase.itens'].create(vals)
         return {'type': 'ir.actions.act_window_close'}
