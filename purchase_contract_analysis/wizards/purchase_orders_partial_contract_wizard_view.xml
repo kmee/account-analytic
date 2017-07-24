@@ -22,7 +22,7 @@
                             <field name="name" string="Nome"/>
                             <field name="product_id" string="Produto"/>
                             <field name="quantity" string="Quantidade"/>
-                            <field name="expected" string="Esperado"  readonly="1"/>
+                            <field name="expected" string="Valor Total"  readonly="1"/>
                             <field name="invoiced" string="Faturado"  readonly="1"/>
                             <field name="to_invoice"
                                    string="Aguardando Faturamento"  readonly="1"/>
