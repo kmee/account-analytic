@@ -18,7 +18,7 @@
                         <field name="product_id" string="Produto"/>
                     </group>
                     <group>
-                        <field name="price" string="Preço"/>
+                        <field name="price" string="Preço Unitário"/>
                     </group>
                     <group>
                         <field name="quantity" string="Quantidade"/>

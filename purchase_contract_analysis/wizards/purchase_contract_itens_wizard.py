@@ -9,6 +9,10 @@ from openerp import api, models, fields
 class PurchaseContractItensWizard(models.TransientModel):
     _name = "purchase.contract.itens.wizard"
 
+    @api.onchange('product_id')
+    def _compute_price(self):
+        self.price = self.product_id.lst_price
+
     name = fields.Char(string="Name", required=True)
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product", required=True
