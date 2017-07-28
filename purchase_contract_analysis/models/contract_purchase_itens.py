@@ -125,3 +125,6 @@ class ContractPurchaseItens(models.Model):
         comodel_name="account.analytic.account",
         string="Contract",
     )
+    date_end = fields.Date(
+        string="Final Date"
+    )

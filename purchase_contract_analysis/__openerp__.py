@@ -16,6 +16,7 @@
         'purchase',
         'account_budget',
         'account_analytic_analysis',
+        'analytic_contract_hr_expense',
     ],
     'data': [
         'security/contract_purchase_itens_security.xml',

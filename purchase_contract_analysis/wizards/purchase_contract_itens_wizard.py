@@ -9,6 +9,10 @@ from openerp import api, models, fields
 class PurchaseContractItensWizard(models.TransientModel):
     _name = "purchase.contract.itens.wizard"
 
+    @api.onchange('product_id')
+    def _compute_price(self):
+        self.price = self.product_id.lst_price
+
     name = fields.Char(string="Name", required=True)
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product", required=True
@@ -20,6 +24,9 @@ class PurchaseContractItensWizard(models.TransientModel):
         string="Contract",
         required=True
     )
+    date_end = fields.Date(
+        string="Final Date"
+    )
 
     @api.multi
     def create_purchase_contract_item(self):
@@ -28,7 +35,8 @@ class PurchaseContractItensWizard(models.TransientModel):
             'product_id': self.product_id.id,
             'price': self.price,
             'quantity': self.quantity,
-            'contract_id': self.contract_id.id
+            'contract_id': self.contract_id.id,
+            'date_end': self.date_end
         }
         self.env['contract.purchase.itens'].create(vals)
         return {'type': 'ir.actions.act_window_close'}

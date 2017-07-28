@@ -15,7 +15,10 @@
                             <field name="product_id" string="Produto"/>
                         </group>
                         <group>
-                            <field name="price" string="Preço"/>
+                            <field name="price" string="Preço Unitário"/>
+                        </group>
+                        <group>
+                            <field name="date_end" string="Data Final"/>
                         </group>
                         <group>
                             <field name="contract_id" invisible="1"/>
@@ -26,7 +29,7 @@
                         </group>
                         <separator string="Gestão de Saldo"/>
                         <group>
-                            <field name="expected" string="Esperado"/>
+                            <field name="expected" string="Valor Total"/>
                             <field name="invoiced" string="Faturado"/>
                             <field name="to_invoice" string="Aguardando Faturamento"/>
                             <field name="remaining" string="Saldo(Qtd)"/>
@@ -44,7 +47,7 @@
                     <field name="name" string="Nome"/>
                     <field name="product_id" string="Produto"/>
                     <field name="quantity" string="Quantidade"/>
-                    <field name="expected" string="Valor Esperado"/>
+                    <field name="expected" string="Valor Total"/>
                     <field name="invoiced" string="Valor Faturado"/>
                     <field name="to_invoice" string="Valor Aguardando Faturamento"/>
                     <field name="remaining" string="Saldo(Qtd)"/>
