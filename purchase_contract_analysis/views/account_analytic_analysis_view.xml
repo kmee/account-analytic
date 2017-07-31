@@ -17,6 +17,28 @@
             </field>
         </record>
 
+        <record model="ir.ui.view"
+                id="purchase_account_analytic_account_button_form_view">
+            <field name="name">pruchase.account.analytic.account.form.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="hr_timesheet.account_analytic_account_timesheet_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='1121']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_account_analytic_account_button_form" model="ir.ui.view">
+            <field name="name">account.analytic.account.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="priority">39</field>
+            <field name="inherit_id" ref="hr_timesheet_invoice.account_analytic_account_form_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='set_cancel']" position="replace">
+                    <button name="set_cancel" string="Cancel Contract" type="object" attrs="{'invisible': ['|', ('contract_type', '=', 'purchase'),('state', 'not in', ['open', 'pending', 'solicitar_rescisao', 'solicitar_encerramento'])]}"/>
+                </xpath>
+            </field>
+        </record>
         <record model="ir.ui.view" id="purchase_account_analytic_account_form_form_view">
             <field name="name">pruchase.account.analytic.account.form.form</field>
             <field name="model">account.analytic.account</field>
