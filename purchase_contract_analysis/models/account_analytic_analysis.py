@@ -52,6 +52,7 @@ class PurchaseAccountAnalyticAnalysis(models.Model):
         context = dict(self.env.context)
         context.update({
             'default_contract_id': self.id,
+            'default_quantity': 1.0,
         })
         form = self.env.ref(
             'purchase_contract_analysis.'
