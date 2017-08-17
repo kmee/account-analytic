@@ -40,6 +40,7 @@ class PurchaseContractItensWizard(models.TransientModel):
             'date_end': self.date_end
         }
         if vals.get('quantity') == 0.0:
-            raise ValidationError(_('Cannot create an item with zero quantity'))
+            raise ValidationError(_('Cannot create an item '
+                                    'with zero quantity'))
         self.env['contract.purchase.itens'].create(vals)
         return {'type': 'ir.actions.act_window_close'}
