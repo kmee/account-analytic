@@ -3,7 +3,8 @@
 # Luiz Felipe do Divino<luiz.divino@kmee.com.br>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp import api, models, fields
+from openerp import api, models, fields, _
+from openerp.exceptions import ValidationError
 
 
 class PurchaseContractItensWizard(models.TransientModel):
@@ -38,5 +39,8 @@ class PurchaseContractItensWizard(models.TransientModel):
             'contract_id': self.contract_id.id,
             'date_end': self.date_end
         }
+        if vals.get('quantity') == 0.0:
+            raise ValidationError(_('Cannot create an item '
+                                    'with zero quantity'))
         self.env['contract.purchase.itens'].create(vals)
         return {'type': 'ir.actions.act_window_close'}

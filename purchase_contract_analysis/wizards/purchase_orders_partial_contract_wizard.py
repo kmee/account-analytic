@@ -105,7 +105,7 @@ class PurchaseOrdersPartialContractWizard(models.TransientModel):
 
 class PurchaseOrdersPartialContractLine(models.TransientModel):
     _name = "purchase.order.partial.contract.line"
-    
+
     @api.depends('line_id')
     @api.multi
     def _get_values(self):

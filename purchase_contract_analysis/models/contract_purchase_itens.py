@@ -19,7 +19,7 @@ class ContractPurchaseItens(models.Model):
         )
 
     @api.multi
-    def _get_purchase_orders_of_product(self, product_id, sale_order_ids):
+    def _get_purchase_lines_of_product(self, product_id, sale_order_ids):
         sale_order_line_obj = self.env['purchase.order.line']
         return sale_order_line_obj.search(
             [
@@ -28,67 +28,52 @@ class ContractPurchaseItens(models.Model):
             ]
         )
 
-    @api.depends('expected', 'quantity')
-    @api.multi
-    def _compute_remaining_amount(self):
-        for record in self:
-            record.remaining = record.quantity - (
-                record.invoiced_qty
-            )
+    def _get_purchase_invoice_values(self, purchase_order_ids):
+        purchase_order_names = []
+        for purchase_order in purchase_order_ids:
+            if purchase_order.name not in purchase_order_names:
+                purchase_order_names.append(purchase_order.name)
+        purchase_invoices = self.env['account.invoice'].search(
+            [
+                ('origin', 'in', purchase_order_names)
+            ]
+        )
+        total = 0.0
+        for purchase_invoice in purchase_invoices:
+            for line in purchase_invoice.invoice_line:
+                if line.product_id.id == self.product_id.id:
+                    total += line.price_subtotal
+        self.invoiced = total
 
-    @api.depends('expected', 'contract_id', 'quantity')
+    def _get_purchase_order_values(self, purchase_order_ids):
+        purchase_line_ids = \
+            self._get_purchase_lines_of_product(
+                self.product_id.id, purchase_order_ids.ids
+            )
+        total = 0.0
+        qty = 0.0
+        for line in purchase_line_ids:
+            total += line.price_subtotal
+            qty += line.product_qty
+
+        self.invoiced_qty = qty
+        self.to_invoice = total - self.invoiced
+
+    @api.depends('product_id', 'contract_id', 'price', 'quantity')
     @api.multi
     def _compute_to_invoice_amount(self):
         for record in self:
-            if record.expected and record.contract_id:
-                sale_order_ids = self._get_purchase_orders_of_the_contract(
-                    record
-                )
-                if sale_order_ids:
-                    contract_sale_order_ids = \
-                        self._get_purchase_orders_of_product(
-                            record.product_id.id, sale_order_ids.ids
-                        )
-                    total = 0.0
-                    qty = 0.0
-                    for line in contract_sale_order_ids:
-                        total += line.price_subtotal
-                        qty += line.product_qty
-                    record.to_invoice = total - record.invoiced
-                    record.invoiced_qty = qty
-                    record.remaining = record.quantity - qty
+            if record.contract_id:
+                purchase_order_ids = \
+                    self._get_purchase_orders_of_the_contract(record)
+                if purchase_order_ids:
+                    record._get_purchase_invoice_values(purchase_order_ids)
+                    record._get_purchase_order_values(purchase_order_ids)
 
-    @api.depends('product_id', 'quantity', 'price')
-    @api.multi
-    def _compute_expected_amount(self):
-        for record in self:
-            if record.product_id and record.quantity:
-                record.expected = \
-                    record.price * record.remaining + record.invoiced + \
-                    record.to_invoice
-
-    @api.depends('product_id', 'contract_id')
-    @api.multi
-    def _compute_invoiced_amount(self):
-        for record in self:
-            purchase_order_ids = self._get_purchase_orders_of_the_contract(
-                record
-            )
-            purchase_order_names = []
-            for purchase_order in purchase_order_ids:
-                if purchase_order.name not in purchase_order_names:
-                    purchase_order_names.append(purchase_order.name)
-            purchase_invoices = self.env['account.invoice'].search(
-                [
-                    ('origin', 'in', purchase_order_names)
-                ]
-            )
-            total = 0.0
-            for purchase_invoice in purchase_invoices:
-                for line in purchase_invoice.invoice_line:
-                    if line.product_id.id == record.product_id.id:
-                        total += line.price_subtotal
-            record.invoiced = total
+                    record.remaining = record.quantity - record.invoiced_qty
+                    record.expected = \
+                        record.price * record.remaining + record.invoiced + \
+                        record.to_invoice
 
     @api.onchange('product_id')
     def _compute_price(self):
@@ -102,12 +87,12 @@ class ContractPurchaseItens(models.Model):
     quantity = fields.Float(string="Quantity", required=True)
     expected = fields.Float(
         string="Expected",
-        compute=_compute_expected_amount,
+        compute=_compute_to_invoice_amount,
         store=True
     )
     invoiced = fields.Float(
         string="Invoiced",
-        compute=_compute_invoiced_amount
+        compute=_compute_to_invoice_amount
     )
     invoiced_qty = fields.Float(
         string="Invoiced Qty",
@@ -119,7 +104,7 @@ class ContractPurchaseItens(models.Model):
     )
     remaining = fields.Float(
         string="Remaining Qty",
-        compute=_compute_remaining_amount
+        compute=_compute_to_invoice_amount
     )
     contract_id = fields.Many2one(
         comodel_name="account.analytic.account",
