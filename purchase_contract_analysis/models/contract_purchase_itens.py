@@ -66,14 +66,13 @@ class ContractPurchaseItens(models.Model):
             if record.contract_id:
                 purchase_order_ids = \
                     self._get_purchase_orders_of_the_contract(record)
-                if purchase_order_ids:
-                    record._get_purchase_invoice_values(purchase_order_ids)
-                    record._get_purchase_order_values(purchase_order_ids)
+                record._get_purchase_invoice_values(purchase_order_ids)
+                record._get_purchase_order_values(purchase_order_ids)
 
-                    record.remaining = record.quantity - record.invoiced_qty
-                    record.expected = \
-                        record.price * record.remaining + record.invoiced + \
-                        record.to_invoice
+                record.remaining = record.quantity - record.invoiced_qty
+                record.expected = \
+                    record.price * record.remaining + record.invoiced + \
+                    record.to_invoice
 
     @api.onchange('product_id')
     def _compute_price(self):
