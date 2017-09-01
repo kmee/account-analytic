@@ -69,9 +69,10 @@ class ContractPurchaseItens(models.Model):
                 record._get_purchase_invoice_values(purchase_order_ids)
                 record._get_purchase_order_values(purchase_order_ids)
 
-                record.remaining = record.quantity - record.invoiced_qty
+                record.remaining_qty = record.quantity - record.invoiced_qty
+                record.remaining = record.remaining_qty*record.price
                 record.expected = \
-                    record.price * record.remaining + record.invoiced + \
+                    record.price * record.remaining_qty + record.invoiced + \
                     record.to_invoice
 
     @api.onchange('product_id')
@@ -101,7 +102,7 @@ class ContractPurchaseItens(models.Model):
         string="To Invoice",
         compute=_compute_to_invoice_amount
     )
-    remaining = fields.Float(
+    remaining_qty = fields.Float(
         string="Remaining Qty",
         compute=_compute_to_invoice_amount
     )
@@ -111,4 +112,8 @@ class ContractPurchaseItens(models.Model):
     )
     date_end = fields.Date(
         string="Final Date"
+    )
+    remaining = fields.Float(
+        string="Remaining",
+        compute=_compute_to_invoice_amount
     )
