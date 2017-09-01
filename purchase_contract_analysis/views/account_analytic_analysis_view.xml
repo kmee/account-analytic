@@ -55,7 +55,8 @@
                                 <field name="expected" string="Valor Total"/>
                                 <field name="invoiced" string="Valor Faturado"/>
                                 <field name="to_invoice" string="Valor Aguardando Faturamento"/>
-                                <field name="remaining" string="Saldo(Qtd)"/>
+                                <field name="remaining" string="Valor do Saldo"/>
+                                <field name="remaining_qty" string="Saldo(Qtd)"/>
                             </tree>
                     </field>
                 </xpath>
