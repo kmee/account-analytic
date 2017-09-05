@@ -120,6 +120,12 @@ class PurchaseOrdersPartialContractLine(models.TransientModel):
                 record.remaining = record.line_id.remaining
                 record.contract_id = record.line_id.contract_id
 
+    @api.one
+    @api.constrains('quantity')
+    def _check_values(self):
+        if self.quantity <= 0.0:
+            raise Warning(_('Quantidade não poder ser zero !'))
+
     wizard_id = fields.Many2one(
         comodel_name="purchase.order.partial.contract.wizard"
     )
@@ -132,7 +138,7 @@ class PurchaseOrdersPartialContractLine(models.TransientModel):
         comodel_name="product.product", string="Product", required=True,
         compute='_get_values'
     )
-    quantity = fields.Float(string="Quantity")
+    quantity = fields.Float(string="Quantity", default=1)
     expected = fields.Float(string="Expected", compute='_get_values')
     invoiced = fields.Float(string="Invoiced", compute='_get_values')
     to_invoice = fields.Float(string="To Invoice",
