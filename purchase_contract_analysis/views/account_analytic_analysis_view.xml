@@ -66,7 +66,7 @@
                             attrs="{'invisible': [('contract_type', '!=', 'purchase')]}" />
                     <button name="create_purchase_orders_wizard" string="Create Orders"
                             class="oe_inline oe_stat_button" icon="fa-edit" type="object"
-                            attrs="{'invisible': [('contract_type', '!=', 'purchase')]}" />
+                            attrs="{'invisible': ['|',('contract_type', '!=', 'purchase'), ('state', '!=', 'open')]}" />
                     <button name="%(action_purchase_order)d" string="View Orders"
                             class="oe_inline oe_stat_button" icon="fa-copy" type="action"
                             context="{'default_partner_id': partner_id, 'search_default_project_id': active_id,'default_project_id': active_id, 'default_pricelist_id': pricelist_id}"/>
