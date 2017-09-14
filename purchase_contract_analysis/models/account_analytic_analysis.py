@@ -27,7 +27,7 @@ class PurchaseAccountAnalyticAnalysis(models.Model):
         inverse_name='contract_id',
     )
     partner_id = fields.Many2one(
-        required=True,
+    #    required=True,
     )
     contract_type = fields.Selection(
         selection=CONTRACT_TYPE,

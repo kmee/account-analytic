@@ -83,6 +83,9 @@
                     <xpath expr="//label[@for='quantity_max']" position="attributes">
                         <attribute name="attrs">{'invisible': [('contract_type', '=', 'purchase')]}</attribute>
                     </xpath>
+                    <field name="partner_id" position="attributes">
+                        <attribute name="required">1</attribute>
+                    </field>
             </field>
         </record>
 
