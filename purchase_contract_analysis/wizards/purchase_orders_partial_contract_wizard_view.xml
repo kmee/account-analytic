@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <record id="view_purchase_orders_partial_contract_wizard" model="ir.ui.view">
+            <field name="name">purchase.orders.partial.contract.wizard.form</field>
+            <field name="model">purchase.order.partial.contract.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Purchase orders Partial Contract">
+                    <separator string="Contract Lines"/>
+                    <p class="oe_grey">
+                        Select how many purchase orders do you want create. This
+                        will create a draft purchase order that can be modified
+                        before validation.
+                    </p>
+                    <group>
+                        <field name="prazo_entrega"/>
+                    </group>
+                    <field name="line_ids" nolabel="1">
+                        <tree string="Lines" create="false" editable="bottom">
+                            <field name="contract_id" invisible="1"/>
+                            <field name="name" string="Nome"/>
+                            <field name="product_id" string="Produto"/>
+                            <field name="quantity" string="Quantidade"/>
+                            <field name="expected" string="Valor Total"  readonly="1"/>
+                            <field name="invoiced" string="Faturado"  readonly="1"/>
+                            <field name="to_invoice"
+                                   string="Aguardando Faturamento"  readonly="1"/>
+                            <field name="remaining" string="Saldo(Qtd)"  readonly="1"/>
+                        </tree>
+                    </field>
+                    <group>
+                        <field name="all_in_one_purchase_order"/>
+                    </group>
+                    <footer>
+                        <button string="Criar Ordens de Serviço"
+                                name="create_purchase_order" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

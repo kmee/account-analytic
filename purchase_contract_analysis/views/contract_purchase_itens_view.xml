@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="contract_purchase_itens_form_view">
+            <field name="name">contract.purchase.itens.form</field>
+            <field name="model">contract.purchase.itens</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" string="Nome"/>
+                        </group>
+                        <group>
+                            <field name="product_id" string="Produto"/>
+                        </group>
+                        <group>
+                            <field name="price" string="Preço Unitário"/>
+                        </group>
+                        <group>
+                            <field name="date_end" string="Data Final"/>
+                        </group>
+                        <group>
+                            <field name="contract_id" invisible="1"/>
+                        </group>
+                        <separator string="Quantidade" />
+                        <group>
+                            <field name="quantity" string="Quantidade"/>
+                        </group>
+                        <separator string="Gestão de Saldo"/>
+                        <group>
+                            <field name="expected" string="Valor Total"/>
+                            <field name="invoiced" string="Faturado"/>
+                            <field name="to_invoice" string="Aguardando Faturamento"/>
+                            <field name="remaining" string="Saldo(Qtd)"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="contract_purchase_itens_tree_view">
+            <field name="name">contract.purchase.itens.tree</field>
+            <field name="model">contract.purchase.itens</field>
+            <field name="arch" type="xml">
+                <tree create="false">
+                    <field name="name" string="Nome"/>
+                    <field name="product_id" string="Produto"/>
+                    <field name="quantity" string="Quantidade"/>
+                    <field name="expected" string="Valor Total"/>
+                    <field name="invoiced" string="Valor Faturado"/>
+                    <field name="to_invoice" string="Valor Aguardando Faturamento"/>
+                    <field name="remaining" string="Saldo(Qtd)"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="contract_purchase_itens_action" model="ir.actions.act_window">
+            <field name="name">Itens Contrato Compras </field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">contract.purchase.itens</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="contract_purchase_itens_action" id="menu_contract_purchase_itens_action" parent="purchase.menu_procurement_management" sequence="30"/>
+    </data>
+</openerp>

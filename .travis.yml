@@ -1,41 +1,35 @@
-# Config file .travis.yml
-
-sudo: false
-cache: pip
-
-addons:
-  apt:
-    packages:
-      - expect-dev  # provides unbuffer utility
-      - python-lxml # because pip installation is slow
-
 language: python
 
 python:
   - "2.7"
 
+addons:
+  apt:
+    packages:
+      - expect-dev  # provides unbuffer utility
+      - python-lxml  # because pip installation is slow
+
 env:
-  global:
-  - VERSION="8.0" TESTS="0" LINT_CHECK="0"
-  - TRANSIFEX_USER='transbot@odoo-community.org'
-  - secure: CSf07Ubip0XXb19t6uBFhRMTlKFz7dGO2oxN5ibgObzjj+fncjdMsTqY0tIGT0/0+X9hWzDL4ZpY+1jhrHDgnDw9D2w81CZXC82DobPf+/pQ4MCHbZmldTqAE/APIzG76D6m77VB0yYGX+3LhNrpRKiDlWbLUFySQV5pe4py4R0=
- 
-  matrix:
-  - LINT_CHECK="1"
-  - TRANSIFEX="1"
-  - TESTS="1" ODOO_REPO="odoo/odoo"
-  - TESTS="1" ODOO_REPO="OCA/OCB"
+  - VERSION="8.0" LINT_CHECK="1"
+  - VERSION="8.0" ODOO_REPO="odoo/odoo" LINT_CHECK="0"
+  - VERSION="8.0" ODOO_REPO="OCA/OCB" LINT_CHECK="0"
 
 virtualenv:
   system_site_packages: true
 
 install:
-  - git clone --depth=1 https://github.com/oca/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
+  - pip install -U pip wheel
+  - pip install unidecode
+  - pip install python-dateutil
+  - pip install pytz
+  - pip install pyparsing
+  - pip install git+https://github.com/aricaldeira/pybrasil.git@bb8d47a415a973bb2a823e1f7a480d77f3e22ef8
   - travis_install_nightly
 
 script:
   - travis_run_tests
 
 after_success:
-  - travis_after_tests_success
+  coveralls
